@@ -13971,25 +13971,28 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h3><p>The project is to use a predictive model focusing on understanding the future of business. Applying Monte Carlo method, the model will predict financial performance metrics in multiple time periods (like profitability, cash flow, sales and others). The model is commonly used in financial planning &amp; budgeting.</p>
-<p>Tool: Python. Thought Excel spreadsheet models are more practical and preferred by most finance professionals.</p>
+<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h3><p>The project is to use a predictive model focusing on understanding the future of business. Applying Monte Carlo method, the model will predict financial performance metrics in multiple periods. Such metrics can be profitability, cash flow, sales and so on. The model is commonly used in financial planning &amp; budgeting to forecast the future and support decision making.</p>
+<p>In this project, I will run simulation in Python. Thought Excel spreadsheet models are more practical and preferred by most finance professionals, I used Python because it's faster and more convenient. Also I want to hone my skill with Python.</p>
+<p>A brief about Monte Carlo simulation: It is a process using probabilistic technique to generate random values for uncertain inputs then compute the outputs, replicating this process for multiple times to understand the distribution of outputs and their statistical properties (min, max, mean and so on).</p>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Define-problem">Define problem<a class="anchor-link" href="#Define-problem">&#182;</a></h3><p>ABC Company has a new-product development decision which involves a lot of uncertainty. The company is interested in evaluating the risk associated with the project and need to answer 3 questions as follows:</p>
+<h3 id="Define-problem">Define problem<a class="anchor-link" href="#Define-problem">&#182;</a></h3><p>Suppose that ABC Company has discovered a potential drug breakthrough in the laboratory and needs to decide whether to conduct clinical trials and seek FDA approval to market the drug. Total R&amp;D costs are expected to reach $700 million, and the cost of clinical trials will be about $150 million. The current market size is estimated to be two million people and is expected to grow at approximately 3% each year. In the first year, ABC estimates gaining an 8% market share, which is anticipated to grow around 20% each year. It is difficult to estimate beyond five years because new competitors are expected to be entering the market. A monthly prescription is anticipated to generate revenue of $130 while incurring variable costs of $40.</p>
+<p>With a lot of uncertainty, their FP&amp;A team is trying to illustrate different scenarios to predict the profitability of the new product. They are interested in evaluating the risk associated with the project and need to answer 3 questions as follows:</p>
 <ol>
 <li>What is the risk that the net present value (NPV) over the five years will not be positive?  </li>
 <li>What are the chances that the product will show a positive cumulative net profit in the third year?  </li>
 <li>In the fifth year, what minimum amount of cumulative profit are we likely to achieve with a probability of at least 90%?  </li>
 </ol>
-<p>Suppose that the Company has identified the following uncertain variables in the model and the distributions and parameters that describe them, as follows:</p>
-<p>a. Market size: normal with mean of 2,000,000 units and standard deviation of 400,000 units.<br>
-b. R&amp;D costs: uniform between $600,000,000 and $800,000,000.<br>
-c. Clinical trial costs: normal with mean of $150,000,000 and standard deviation $30,000,000.<br>
+<p>Suppose that the team has identified the following uncertain variables in the model and the distributions and parameters that describe them, as follows:</p>
+<p>a. Market size is normally estimated with average of 2,000,000 units (mean) and could fluctuate of 400,000 units (standard deviation).<br>
+b. R&amp;D costs are expected to reach any level between $600,000,000 and $800,000,000 (uniformly distribution).<br>
+c. Clinical trial costs: normal with average of $150,000,000 and standard deviation $30,000,000.<br>
 d. Annual market growth factor: triangular with minimum = 2%, maximum 6%, and most likely = 3%.<br>
 e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%, and most likely = 20%.</p>
+<p>Reference: Evans, J. R. (2021). Spreadsheet Modeling and Analysis. In Business analytics: Methods, models, and decisions (pp. 405–440). Pearson.</p>
 
 </div>
 </div>
@@ -14019,7 +14022,7 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Code">Code<a class="anchor-link" href="#Code">&#182;</a></h3>
+<h3 id="Inputs">Inputs<a class="anchor-link" href="#Inputs">&#182;</a></h3>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -14043,9 +14046,70 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
 <span class="n">share_growth_min</span> <span class="o">=</span> <span class="mf">.15</span>
 <span class="n">share_growth_mode</span> <span class="o">=</span> <span class="mf">.2</span>
 <span class="n">share_growth_max</span> <span class="o">=</span> <span class="mf">.25</span>
-<span class="n">iteration</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">iteration</span> <span class="o">=</span> <span class="mi">1000</span> 
 <span class="n">project_year</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="k">def</span> <span class="nf">project</span> <span class="p">():</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Set-up-code">Set up code<a class="anchor-link" href="#Set-up-code">&#182;</a></h3><p>In this problem, some inputs are uncertain and distributed in different ways. Inputs are normal, uniform and triangular random variates.</p>
+<p>Normal distribution: Clinical trial cost, market size.<br>
+Uniform distribution: R&amp;D cost.<br>
+Triangular distribution: annual market growth factor and annual market share growth rate.</p>
+<p>For R&amp;D and Clinical trial cost, the random inputs are used in first year only, these expenses presumably to spend all once the project begins. The other inputs like growth rate or market size, the team must use different input values for each year of the model as these values are independent of each other. For example, the code below generate 5 different radom value of share growth rate for 5 years.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">share_growth_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">triangular</span><span class="p">(</span><span class="n">share_growth_min</span><span class="p">,</span><span class="n">share_growth_mode</span><span class="p">,</span><span class="n">share_growth_max</span><span class="p">,</span><span class="n">project_year</span><span class="p">)</span>
+<span class="n">share_growth_rate</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([0.21025419, 0.24804414, 0.20010102, 0.17908312, 0.24413876])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">project</span> <span class="p">():</span>
     <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
         <span class="n">rd_cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">rd_cost_lower</span><span class="p">,</span><span class="n">rd_cost_upper</span><span class="p">)</span>
@@ -14090,7 +14154,7 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">project</span><span class="p">(),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year1&#39;</span><span class="p">,</span><span class="s1">&#39;year2&#39;</span><span class="p">,</span><span class="s1">&#39;year3&#39;</span><span class="p">,</span><span class="s1">&#39;year4&#39;</span><span class="p">,</span><span class="s1">&#39;year5&#39;</span><span class="p">,</span><span class="s1">&#39;Total_NPV&#39;</span><span class="p">])</span>
-<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c1">#showing first 5 rows</span>
 </pre></div>
 
      </div>
@@ -14140,48 +14204,48 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
   <tbody>
     <tr>
       <th>0</th>
-      <td>-704</td>
-      <td>-500</td>
-      <td>-251</td>
-      <td>71</td>
-      <td>476</td>
-      <td>137</td>
+      <td>-592</td>
+      <td>-389</td>
+      <td>-138</td>
+      <td>167</td>
+      <td>547</td>
+      <td>222</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>-614</td>
-      <td>-401</td>
-      <td>-137</td>
-      <td>194</td>
-      <td>607</td>
-      <td>257</td>
+      <td>-569</td>
+      <td>-353</td>
+      <td>-80</td>
+      <td>262</td>
+      <td>685</td>
+      <td>327</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>-786</td>
-      <td>-567</td>
-      <td>-291</td>
-      <td>55</td>
-      <td>497</td>
-      <td>128</td>
+      <td>-622</td>
+      <td>-415</td>
+      <td>-159</td>
+      <td>156</td>
+      <td>552</td>
+      <td>216</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>-572</td>
-      <td>-370</td>
-      <td>-119</td>
-      <td>194</td>
-      <td>570</td>
-      <td>244</td>
+      <td>-747</td>
+      <td>-529</td>
+      <td>-256</td>
+      <td>86</td>
+      <td>518</td>
+      <td>156</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>-800</td>
-      <td>-587</td>
-      <td>-328</td>
-      <td>-6</td>
-      <td>398</td>
-      <td>56</td>
+      <td>-696</td>
+      <td>-476</td>
+      <td>-204</td>
+      <td>132</td>
+      <td>545</td>
+      <td>190</td>
     </tr>
   </tbody>
 </table>
@@ -14254,89 +14318,89 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
       <td>1000.000000</td>
       <td>1000.000000</td>
       <td>1000.000000</td>
-      <td>1000.000000</td>
+      <td>1000.00000</td>
       <td>1000.000000</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>-674.587000</td>
-      <td>-459.499000</td>
-      <td>-191.935000</td>
-      <td>140.972000</td>
-      <td>555.048000</td>
-      <td>203.761000</td>
+      <td>-679.530000</td>
+      <td>-464.545000</td>
+      <td>-197.285000</td>
+      <td>135.274000</td>
+      <td>548.48900</td>
+      <td>197.701000</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>66.202214</td>
-      <td>66.810266</td>
-      <td>68.435197</td>
-      <td>72.333224</td>
-      <td>80.050858</td>
-      <td>73.789327</td>
+      <td>65.020818</td>
+      <td>65.543313</td>
+      <td>67.050186</td>
+      <td>70.259685</td>
+      <td>77.46866</td>
+      <td>71.686376</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>-837.000000</td>
-      <td>-613.000000</td>
-      <td>-365.000000</td>
-      <td>-63.000000</td>
-      <td>297.000000</td>
-      <td>-16.000000</td>
+      <td>-836.000000</td>
+      <td>-622.000000</td>
+      <td>-367.000000</td>
+      <td>-56.000000</td>
+      <td>337.00000</td>
+      <td>4.000000</td>
     </tr>
     <tr>
       <th>5%</th>
-      <td>-782.000000</td>
-      <td>-567.000000</td>
-      <td>-302.000000</td>
-      <td>25.950000</td>
-      <td>427.950000</td>
-      <td>86.950000</td>
+      <td>-781.050000</td>
+      <td>-569.000000</td>
+      <td>-304.050000</td>
+      <td>19.950000</td>
+      <td>415.00000</td>
+      <td>79.950000</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>-725.000000</td>
-      <td>-511.000000</td>
-      <td>-244.000000</td>
-      <td>85.750000</td>
-      <td>495.750000</td>
-      <td>148.000000</td>
+      <td>-730.000000</td>
+      <td>-513.000000</td>
+      <td>-246.000000</td>
+      <td>86.000000</td>
+      <td>495.00000</td>
+      <td>147.750000</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>-674.500000</td>
-      <td>-459.000000</td>
-      <td>-191.000000</td>
-      <td>141.000000</td>
-      <td>554.500000</td>
-      <td>203.500000</td>
+      <td>-681.500000</td>
+      <td>-466.000000</td>
+      <td>-199.000000</td>
+      <td>136.000000</td>
+      <td>550.00000</td>
+      <td>197.000000</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>-625.000000</td>
-      <td>-409.000000</td>
-      <td>-140.000000</td>
-      <td>195.000000</td>
-      <td>615.250000</td>
-      <td>259.000000</td>
+      <td>-630.750000</td>
+      <td>-415.000000</td>
+      <td>-148.000000</td>
+      <td>186.000000</td>
+      <td>602.00000</td>
+      <td>250.000000</td>
     </tr>
     <tr>
       <th>95%</th>
-      <td>-568.000000</td>
-      <td>-351.000000</td>
-      <td>-80.000000</td>
-      <td>259.100000</td>
-      <td>690.000000</td>
-      <td>326.000000</td>
+      <td>-571.950000</td>
+      <td>-356.950000</td>
+      <td>-86.950000</td>
+      <td>249.050000</td>
+      <td>672.00000</td>
+      <td>314.000000</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>-500.000000</td>
-      <td>-279.000000</td>
-      <td>-3.000000</td>
-      <td>333.000000</td>
-      <td>749.000000</td>
-      <td>392.000000</td>
+      <td>-527.000000</td>
+      <td>-315.000000</td>
+      <td>-42.000000</td>
+      <td>320.000000</td>
+      <td>779.00000</td>
+      <td>395.000000</td>
     </tr>
   </tbody>
 </table>
@@ -14356,7 +14420,9 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Total_NPV&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="c1"># df[&#39;Total_NPV&#39;].plot.kde()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Total NPV&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occurence&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Net present value over 5 years&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14378,7 +14444,7 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;AxesSubplot:ylabel=&#39;Frequency&#39;&gt;</pre>
+<pre>Text(0.5, 1.0, &#39;Net present value over 5 years&#39;)</pre>
 </div>
 
 </div>
@@ -14392,7 +14458,7 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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"
+<img src="data:image/png;base64,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"
 >
 </div>
 
@@ -14524,7 +14590,7 @@ e. Annual market share growth rate: triangular with minimum = 15%, maximum = 25%
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Minimum amount of cumulative profit are we likely to achieve in year 5 is: 449.0
+<pre>Minimum amount of cumulative profit are we likely to achieve in year 5 is: 444.0
 </pre>
 </div>
 </div>
